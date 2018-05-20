@@ -1,5 +1,10 @@
 package se.hh.imageEditor.swing;
 
+import static se.hh.imageEditor.swing.resources.IconProvider.EXIT;
+import static se.hh.imageEditor.swing.resources.IconProvider.NEW;
+import static se.hh.imageEditor.swing.resources.IconProvider.OPEN;
+import static se.hh.imageEditor.swing.resources.IconProvider.SAVE;
+
 import java.awt.event.ActionListener;
 import java.util.List;
 
@@ -8,10 +13,20 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 import se.hh.filterApi.Filter;
+import se.hh.filterApi.image.Image;
+import se.hh.imageEditor.filters.FilterListener;
 import se.hh.imageEditor.gui.Toolbar;
-import se.hh.imageEditor.swing.resources.IconProvider;
 
 public final class SwingToolbar implements Toolbar {
+
+	private static final String NEW_OPTION = "New";
+	private static final String OPEN_OPTION = "Open";
+	private static final String SAVE_OPTION = "Save";
+	private static final String EXIT_OPTION = "Exit";
+
+	private static final String HELP_MENU = "Help";
+	private static final String FILTERS_MENU = "Filters";
+	private static final String FILE_MENU = "File";
 
 	private JMenuItem newMenuItem;
 	private JMenuItem openMenuItem;
@@ -24,15 +39,15 @@ public final class SwingToolbar implements Toolbar {
 	public JMenuBar build() {
 		JMenuBar menubar = new JMenuBar();
 
-		JMenu fileMenu = new JMenu("File");
-		filterMenu = new JMenu("Filters");
-		JMenu helpMenu = new JMenu("Help");
+		JMenu fileMenu = new JMenu(FILE_MENU);
+		filterMenu = new JMenu(FILTERS_MENU);
+		JMenu helpMenu = new JMenu(HELP_MENU);
 
-		newMenuItem = new JMenuItem("New", IconProvider.NEW.get());
-		openMenuItem = new JMenuItem("Open", IconProvider.OPEN.get());
-		saveMenuItem = new JMenuItem("Save", IconProvider.SAVE.get());
+		newMenuItem = new JMenuItem(NEW_OPTION, NEW.get());
+		openMenuItem = new JMenuItem(OPEN_OPTION, OPEN.get());
+		saveMenuItem = new JMenuItem(SAVE_OPTION, SAVE.get());
 
-		exitMenuItem = new JMenuItem("Exit", IconProvider.EXIT.get());
+		exitMenuItem = new JMenuItem(EXIT_OPTION, EXIT.get());
 
 		JMenu patternsMenu = new JMenu("Image patterns");
 
@@ -86,11 +101,12 @@ public final class SwingToolbar implements Toolbar {
 	}
 
 	@Override
-	public void addFilters(List<Filter> filters) {
+	public void addFilters(List<Filter> filters, FilterListener filterListener) {
 		for (Filter filter : filters) {
 			JMenuItem filterMenuItem = new JMenuItem(filter.getName());
 			filterMenuItem.addActionListener(e -> {
-				// filter.apply(image)
+				Image filteredImage = filter.apply(filterListener.getImage());
+				filterListener.filterPerformed(filteredImage);
 			});
 			filterMenu.add(filterMenuItem);
 		}

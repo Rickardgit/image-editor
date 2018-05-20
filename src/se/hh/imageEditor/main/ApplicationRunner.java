@@ -1,5 +1,6 @@
 package se.hh.imageEditor.main;
 
+import se.hh.imageEditor.filters.DefaultFilterProvider;
 import se.hh.imageEditor.gui.ImageArea;
 import se.hh.imageEditor.gui.Toolbar;
 import se.hh.imageEditor.swing.SwingImageArea;
@@ -11,6 +12,6 @@ public final class ApplicationRunner {
 	public static void main(String[] args) {
 		Toolbar toolbar = new SwingToolbar();
 		ImageArea imageArea = new SwingImageArea();
-		new SwingImageEditor(toolbar, imageArea);
+		new SwingImageEditor(toolbar, imageArea, new DefaultFilterProvider());
 	}
 }

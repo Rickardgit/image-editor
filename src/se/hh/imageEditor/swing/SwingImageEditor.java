@@ -11,14 +11,16 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
-import se.hh.filterApi.Filter;
+import se.hh.filterApi.image.BufferedImageAdapter;
+import se.hh.filterApi.image.Image;
+import se.hh.imageEditor.filters.FilterListener;
 import se.hh.imageEditor.filters.FilterProvider;
 import se.hh.imageEditor.gui.ImageArea;
 import se.hh.imageEditor.gui.ImageEditor;
 import se.hh.imageEditor.gui.Toolbar;
 import se.hh.imageEditor.io.ImageHandler;
 
-public class SwingImageEditor implements ImageEditor {
+public class SwingImageEditor implements ImageEditor, FilterListener {
 
 	private JFrame frame;
 	private ImageArea imageArea;
@@ -27,8 +29,9 @@ public class SwingImageEditor implements ImageEditor {
 	private BufferedImage image;
 
 	private JFileChooser fileChooser;
+	private FilterProvider provider;
 
-	public SwingImageEditor(Toolbar toolbar, ImageArea imageArea) {
+	public SwingImageEditor(Toolbar toolbar, ImageArea imageArea, FilterProvider provider) {
 		frame = new JFrame("Image Viewer and manipulation");
 		JPanel contentPane = (JPanel) frame.getContentPane();
 		contentPane.setBorder(new EmptyBorder(40, 40, 40, 40));
@@ -36,6 +39,7 @@ public class SwingImageEditor implements ImageEditor {
 
 		fileChooser = new JFileChooser();
 
+		setFilterProvider(provider);
 		setToolbar(toolbar);
 		setImageArea(imageArea);
 
@@ -58,7 +62,7 @@ public class SwingImageEditor implements ImageEditor {
 
 	@Override
 	public void setFilterProvider(FilterProvider provider) {
-		// TODO Auto-generated method stub
+		this.provider = provider;
 	}
 
 	private void configure(Toolbar toolbar) {
@@ -81,12 +85,19 @@ public class SwingImageEditor implements ImageEditor {
 				ImageHandler.saveImage(image, selectedFile);
 			}
 		});
+
+		toolbar.addFilters(provider.getFilters(), this);
 	}
 
-	private void applyFilter(Filter filter) {
-		// XXX image = filter.apply(image);
-		imageArea.setContent(image);
+	@Override
+	public Image getImage() {
+		return new BufferedImageAdapter(image);
+	}
 
+	@Override
+	public void filterPerformed(Image image) {
+		this.image = image.toBufferedImage();
+		imageArea.setContent(this.image);
 		frame.repaint();
 	}
 
