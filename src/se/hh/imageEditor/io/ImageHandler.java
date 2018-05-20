@@ -10,17 +10,20 @@ public final class ImageHandler {
 
 	private static final String IMAGE_FORMAT = "jpg";
 
-	public static BufferedImage readImage(String filename) throws Exception {
+	public static BufferedImage readImage(String filename) {
 		File file = new File(filename);
-		return ImageIO.read(file);
-
+		try {
+			return ImageIO.read(file);
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	public static void saveImage(BufferedImage image, File file) {
 		try {
 			ImageIO.write(image, IMAGE_FORMAT, file);
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 	}
 

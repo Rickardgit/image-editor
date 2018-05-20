@@ -1,5 +1,7 @@
 package se.hh.imageEditor.swing;
 
+import static javax.swing.JFileChooser.APPROVE_OPTION;
+
 import java.awt.BorderLayout;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -63,29 +65,18 @@ public class SwingImageEditor implements ImageEditor {
 		toolbar.addExitListener(e -> System.exit(0));
 
 		toolbar.addOpenListener(e -> {
+			if (fileChooser.showOpenDialog(frame) == APPROVE_OPTION) {
 
-			int result = fileChooser.showOpenDialog(null);
-			if (result == JFileChooser.APPROVE_OPTION) {
-
-				try {
-					image = ImageHandler.readImage(fileChooser.getSelectedFile().getAbsolutePath().toString());
-					imageArea.setContent(image);
-					frame.pack();
-
-				} catch (Exception e1) {
-					e1.printStackTrace();
-				}
-
-			} else if (result == JFileChooser.CANCEL_OPTION) {
-				System.out.println("No File Select");
+				File selectedFile = fileChooser.getSelectedFile();
+				image = ImageHandler.readImage(selectedFile.getAbsolutePath());
+				imageArea.setContent(image);
+				frame.pack();
 			}
 		});
 
 		toolbar.addSaveListener(e -> {
-			int result = fileChooser.showSaveDialog(frame);
-			if (result == JFileChooser.CANCEL_OPTION) {
-				System.out.println("cancelled");
-			} else {
+			if (fileChooser.showSaveDialog(frame) == JFileChooser.APPROVE_OPTION) {
+
 				File selectedFile = fileChooser.getSelectedFile();
 				ImageHandler.saveImage(image, selectedFile);
 			}
