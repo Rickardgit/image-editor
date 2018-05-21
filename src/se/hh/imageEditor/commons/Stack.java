@@ -24,6 +24,7 @@ public final class Stack<T> {
 	 *            the maximum capacity of the stack
 	 * @precondition capacity > 0
 	 */
+	@SuppressWarnings("unchecked")
 	public Stack(int capacity) {
 		assert capacity > 0 : "The capacity must be a positive integer.";
 		this.capacity = capacity;
@@ -58,6 +59,7 @@ public final class Stack<T> {
 	 *            Array of elements to be stored
 	 * @precondition size + elements.length <= capacity
 	 */
+	@SuppressWarnings("unchecked")
 	public void push(T... elements) {
 		assert size + elements.length <= capacity : "Unsupported capacity.";
 		for (int i = 0; i < elements.length; i++) {
@@ -69,6 +71,7 @@ public final class Stack<T> {
 	 * @return a list containing the 'n' number of elements
 	 * @precondition n <= size
 	 */
+	@SuppressWarnings("unchecked")
 	public List<T> pop(int n) {
 		assert n <= size : "Not enough elements in the stack.";
 		T[] result = (T[]) new Object[n];
@@ -85,6 +88,7 @@ public final class Stack<T> {
 		return size;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void clear() {
 		if (!isEmpty()) {
 			elements = (T[]) new Object[capacity];

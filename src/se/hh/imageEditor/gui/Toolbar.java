@@ -8,17 +8,21 @@ import javax.swing.JMenuBar;
 import se.hh.filterApi.Filter;
 import se.hh.imageEditor.filters.ImagePresenter;
 
-public interface Toolbar extends GUIComponent {
+public interface Toolbar {
 
 	JMenuBar build();
 
-	void addNewListener(ActionListener action);
+	void addNewListener(ActionListener listener);
 
-	void addOpenListener(ActionListener action);
+	void addOpenListener(ActionListener listener);
 
-	void addSaveListener(ActionListener action);
+	void addSaveListener(ActionListener listener);
 
-	void addExitListener(ActionListener action);
+	void addExitListener(ActionListener listener);
+
+	void addUndoListener(ActionListener listener);
+
+	void addRedoListener(ActionListener listener);
 
 	void addFilters(List<Filter> filters, ImagePresenter presenter);
 

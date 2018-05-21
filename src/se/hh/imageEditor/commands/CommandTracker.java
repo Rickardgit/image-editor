@@ -29,8 +29,10 @@ public final class CommandTracker {
 	}
 
 	public void redo() {
-		Command command = redo.pop();
-		command.execute();
-		undo.push(command);
+		if (!redo.isEmpty()) {
+			Command command = redo.pop();
+			command.execute();
+			undo.push(command);
+		}
 	}
 }

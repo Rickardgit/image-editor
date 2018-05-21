@@ -50,6 +50,7 @@ public class SwingImageEditor implements ImageEditor, ImagePresenter {
 		frame.pack();
 		frame.setVisible(true);
 
+		tracker = new CommandTracker();
 	}
 
 	@Override
@@ -90,6 +91,9 @@ public class SwingImageEditor implements ImageEditor, ImagePresenter {
 				ImageHandler.saveImage(image, selectedFile);
 			}
 		});
+
+		toolbar.addUndoListener(e -> tracker.undo());
+		toolbar.addRedoListener(e -> tracker.redo());
 
 		toolbar.addFilters(provider.getFilters(), this);
 	}
