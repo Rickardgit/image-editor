@@ -57,7 +57,7 @@ public class SwingImageEditor implements ImageEditor, FilterListener {
 	public void setToolbar(Toolbar toolbar) {
 		this.toolbar = toolbar;
 		frame.setJMenuBar(toolbar.build());
-		configure(toolbar);
+		configureToolbar();
 	}
 
 	@Override
@@ -65,7 +65,7 @@ public class SwingImageEditor implements ImageEditor, FilterListener {
 		this.provider = provider;
 	}
 
-	private void configure(Toolbar toolbar) {
+	private void configureToolbar() {
 		toolbar.addExitListener(e -> System.exit(0));
 
 		toolbar.addOpenListener(e -> {

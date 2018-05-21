@@ -19,6 +19,6 @@ public enum IconProvider {
 	}
 
 	public ImageIcon get() {
-		return icon;
+		return icon; 
 	}
 }
