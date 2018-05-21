@@ -13,14 +13,16 @@ import javax.swing.border.EmptyBorder;
 
 import se.hh.filterApi.image.BufferedImageAdapter;
 import se.hh.filterApi.image.Image;
-import se.hh.imageEditor.filters.FilterListener;
+import se.hh.imageEditor.commands.CommandTracker;
+import se.hh.imageEditor.commands.FilterCommand;
 import se.hh.imageEditor.filters.FilterProvider;
+import se.hh.imageEditor.filters.ImagePresenter;
 import se.hh.imageEditor.gui.ImageArea;
 import se.hh.imageEditor.gui.ImageEditor;
 import se.hh.imageEditor.gui.Toolbar;
 import se.hh.imageEditor.io.ImageHandler;
 
-public class SwingImageEditor implements ImageEditor, FilterListener {
+public class SwingImageEditor implements ImageEditor, ImagePresenter {
 
 	private JFrame frame;
 	private ImageArea imageArea;
@@ -30,6 +32,8 @@ public class SwingImageEditor implements ImageEditor, FilterListener {
 
 	private JFileChooser fileChooser;
 	private FilterProvider provider;
+
+	private CommandTracker tracker;
 
 	public SwingImageEditor(Toolbar toolbar, ImageArea imageArea, FilterProvider provider) {
 		frame = new JFrame("Image Viewer and manipulation");
@@ -45,6 +49,7 @@ public class SwingImageEditor implements ImageEditor, FilterListener {
 
 		frame.pack();
 		frame.setVisible(true);
+
 	}
 
 	@Override
@@ -96,6 +101,11 @@ public class SwingImageEditor implements ImageEditor, FilterListener {
 
 	@Override
 	public void filterPerformed(Image image) {
+		tracker.execute(new FilterCommand(this, image));
+	}
+
+	@Override
+	public void setImage(Image image) {
 		this.image = image.toBufferedImage();
 		imageArea.setContent(this.image);
 		frame.repaint();

@@ -14,7 +14,7 @@ import javax.swing.JMenuItem;
 
 import se.hh.filterApi.Filter;
 import se.hh.filterApi.image.Image;
-import se.hh.imageEditor.filters.FilterListener;
+import se.hh.imageEditor.filters.ImagePresenter;
 import se.hh.imageEditor.gui.Toolbar;
 
 public final class SwingToolbar implements Toolbar {
@@ -101,12 +101,12 @@ public final class SwingToolbar implements Toolbar {
 	}
 
 	@Override
-	public void addFilters(List<Filter> filters, FilterListener filterListener) {
+	public void addFilters(List<Filter> filters, ImagePresenter presenter) {
 		for (Filter filter : filters) {
 			JMenuItem filterMenuItem = new JMenuItem(filter.getName());
 			filterMenuItem.addActionListener(e -> {
-				Image filteredImage = filter.apply(filterListener.getImage());
-				filterListener.filterPerformed(filteredImage);
+				Image filteredImage = filter.apply(presenter.getImage());
+				presenter.filterPerformed(filteredImage);
 			});
 			filterMenu.add(filterMenuItem);
 		}
